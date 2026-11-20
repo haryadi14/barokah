@@ -1,0 +1,6 @@
+{
+  "name": "BAROKAH STORE",
+  "description": "Fashion retail and lifestyle accessories in Seminyak, Bali — handbags, wallets, sunglasses, perfumes, sandals, clothing, sports jerseys, and worldwide shipping.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
