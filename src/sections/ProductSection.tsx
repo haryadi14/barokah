@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
 import ProductModal from '../components/ProductModal';
 import { COLLECTIONS } from '../data/collections';
-import { PRODUCTS, ProductItem } from '../data/products';
+import { ALL_CATALOG_PRODUCTS } from '../data/catalogLoader';
+import { ProductItem } from '../data/products';
 
 export default function ProductSection() {
   const [activeFilter, setActiveFilter] = useState<string>('featured');
@@ -11,14 +12,14 @@ export default function ProductSection() {
 
   const visibleProducts = useMemo(() => {
     if (activeFilter === 'featured') {
-      return PRODUCTS.filter((item) => item.isFeatured);
+      return ALL_CATALOG_PRODUCTS.filter((item) => item.isFeatured);
     }
-    return PRODUCTS.filter((item) => item.categoryId === activeFilter);
+    return ALL_CATALOG_PRODUCTS.filter((item) => item.categoryId === activeFilter);
   }, [activeFilter]);
 
   return (
-    <section className="border-b border-border bg-sand/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+    <section className="border-b border-border bg-ivory">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
           <div>
             <span className="text-xs font-sans tracking-editorial uppercase text-earth">

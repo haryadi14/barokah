@@ -13,31 +13,29 @@ export default function CollectionSection() {
         visible ? 'reveal-visible' : ''
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-10 border-b border-border">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-8 border-b border-border">
           <div>
             <span className="text-xs font-sans tracking-editorial uppercase text-earth">
-              Shop By Category
+              Collections
             </span>
-            <h2 className="mt-3 font-serif display-section text-charcoal">
+            <h2 className="mt-2.5 font-serif display-section text-charcoal">
               EXPLORE OUR COLLECTIONS
             </h2>
+            <p className="mt-2 text-sm sm:text-base text-stone">
+              Choose a collection to start browsing — find something that matches your style.
+            </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 md:gap-8">
-            <p className="text-sm sm:text-base text-stone">
-              Find something that matches your style.
-            </p>
-            <Link
-              to="/collections"
-              className="text-xs font-sans tracking-editorial uppercase text-charcoal border-b border-charcoal pb-1 hover:text-earth hover:border-earth transition-colors self-start sm:self-auto whitespace-nowrap shrink-0"
-            >
-              View All 8 Categories
-            </Link>
-          </div>
+          <Link
+            to="/collections"
+            className="text-xs font-sans tracking-editorial uppercase text-charcoal border-b border-charcoal pb-1 hover:text-earth hover:border-earth transition-colors self-start sm:self-auto whitespace-nowrap shrink-0"
+          >
+            View All
+          </Link>
         </div>
 
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-12 gap-x-4 sm:gap-x-6 gap-y-10 sm:gap-y-14">
+        <div className="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-8 sm:gap-y-10">
           {COLLECTIONS.map((collection) => (
             <CollectionCard key={collection.id} collection={collection} />
           ))}

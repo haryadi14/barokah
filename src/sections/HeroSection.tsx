@@ -1,101 +1,68 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import Button from '../components/Button';
-import EditorialImage from '../components/EditorialImage';
 import { BRAND } from '../data/brand';
-import { COLLECTIONS } from '../data/collections';
 import { IMAGES } from '../data/images';
 import { buildWhatsAppUrl } from '../utils/whatsapp';
 
 export default function HeroSection() {
+  const [imgError, setImgError] = useState(false);
+
   return (
-    <section className="border-b border-border bg-ivory">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-12 sm:pt-14 sm:pb-16 lg:pt-20 lg:pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-end">
-          {/* Left Editorial Typography & Hierarchy */}
-          <div className="lg:col-span-6 order-2 lg:order-1 pb-2">
-            <div className="inline-flex items-center gap-3 text-[11px] font-sans tracking-editorial uppercase text-earth">
-              <span>Seminyak, Bali</span>
-              <span aria-hidden="true">·</span>
-              <span>Jalan Camplung Tanduk No. 15</span>
-            </div>
+    <section className="relative w-full overflow-hidden border-b border-border bg-espresso min-h-[540px] sm:min-h-[600px] lg:min-h-[660px] flex items-end lg:items-center">
+      {/* Unified Full-Bleed Hero Image */}
+      {!imgError && IMAGES.heroPrimary.src && (
+        <img
+          src={IMAGES.heroPrimary.src}
+          alt={IMAGES.heroPrimary.alt}
+          referrerPolicy="no-referrer"
+          onError={() => setImgError(true)}
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+      )}
 
-            <h1 className="mt-6 font-serif display-hero text-charcoal">
-              GOOD QUALITY.
-              <br />
-              GOOD STYLE.
-              <br />
-              <span className="italic font-normal text-charcoal/90">
-                REASONABLE PRICE.
-              </span>
-            </h1>
+      {/* Measured Contrast Scrim for WCAG AA Legibility */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 bg-gradient-to-t from-[#1C1B18]/85 via-[#1C1B18]/50 to-[#1C1B18]/25 lg:bg-gradient-to-r lg:from-[#1C1B18]/85 lg:via-[#1C1B18]/50 lg:to-[#1C1B18]/15"
+      />
 
-            <p className="mt-7 text-base sm:text-lg text-stone leading-[1.65] max-w-lg">
-              {BRAND.description.short}
-            </p>
+      {/* Overlaid Hero Content */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-24">
+        <div className="max-w-xl">
+          <p className="text-xs font-sans tracking-editorial uppercase text-ivory/80">
+            Seminyak, Bali · Worldwide Shipping
+          </p>
 
-            <div className="mt-9 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-              <Button to="/collections" variant="primary">
-                <span>Explore Collections</span>
-                <ArrowRight className="w-4 h-4" aria-hidden="true" />
-              </Button>
-              <Button
-                href={buildWhatsAppUrl(
-                  'Hello Barokah Store, I would like to inquire about your products.'
-                )}
-                external
-                variant="secondary"
-              >
-                Contact Us
-              </Button>
-            </div>
-          </div>
-
-          {/* Right Asymmetrical Layered Lookbook Composition */}
-          <div className="lg:col-span-6 order-1 lg:order-2">
-            <div className="relative">
-              <div className="grid grid-cols-12 gap-4 items-end">
-                <div className="col-span-12 sm:col-span-9">
-                  <EditorialImage
-                    image={IMAGES.heroPrimary}
-                    aspectClass="aspect-[4/5]"
-                  />
-                </div>
-                <div className="hidden sm:block sm:col-span-3" />
-              </div>
-
-              {/* Overlapping Secondary Lookbook Frame */}
-              <div className="hidden sm:block w-[42%] absolute right-0 bottom-8">
-                <EditorialImage
-                  image={IMAGES.heroSecondary}
-                  aspectClass="aspect-[4/3]"
-                  className="bg-sand"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Architectural Category Index Strip */}
-        <div className="mt-12 lg:mt-16 pt-6 border-t border-border">
-          <div className="flex items-center justify-between gap-4 mb-3 lg:hidden">
-            <span className="text-[11px] font-sans tracking-editorial uppercase text-stone">
-              Quick Category Index
+          <h1 className="mt-4 font-serif display-hero text-ivory">
+            GOOD QUALITY.
+            <br />
+            GOOD STYLE.
+            <br />
+            <span className="italic font-normal text-ivory/95">
+              REASONABLE PRICE.
             </span>
-          </div>
-          <div className="flex items-center gap-2.5 overflow-x-auto no-scrollbar pb-1">
-            {COLLECTIONS.map((cat) => (
-              <Link
-                key={cat.id}
-                to={`/collections?category=${encodeURIComponent(cat.id)}`}
-                className="shrink-0 whitespace-nowrap inline-flex items-center gap-2 px-3.5 py-2.5 border border-border bg-sand/60 hover:border-charcoal hover:bg-sand text-xs font-sans text-charcoal transition-colors"
-              >
-                <span className="text-[11px] text-earth tabular-nums">
-                  {cat.shortLabel}
-                </span>
-                <span>{cat.name}</span>
-              </Link>
-            ))}
+          </h1>
+
+          <p className="mt-5 text-base sm:text-lg text-ivory/85 leading-[1.65] max-w-md">
+            {BRAND.description.short}
+          </p>
+
+          <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
+            <Button to="/collections" variant="ivory">
+              <span>Explore Collections</span>
+              <ArrowRight className="w-4 h-4" aria-hidden="true" />
+            </Button>
+            <Button
+              href={buildWhatsAppUrl(
+                'Hello Barokah Store, I would like to inquire about your products.'
+              )}
+              external
+              variant="secondary"
+              className="border-ivory text-ivory hover:bg-ivory hover:text-charcoal"
+            >
+              Contact Us
+            </Button>
           </div>
         </div>
       </div>

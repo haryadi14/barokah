@@ -51,7 +51,7 @@ export const BRAND = {
     { label: 'Home', to: '/' },
     { label: 'Collections', to: '/collections' },
     { label: 'About Us', to: '/about' },
-    { label: 'Our Store', to: '/#our-store' },
+    { label: 'Find a Store', to: '/#our-store' },
     { label: 'Contact', to: '/contact' },
   ] as NavItem[],
   advantages: [

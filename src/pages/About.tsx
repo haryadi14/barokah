@@ -1,5 +1,6 @@
 import EditorialImage from '../components/EditorialImage';
 import WhyChooseUs from '../sections/WhyChooseUs';
+import ServicesSection from '../sections/ServicesSection';
 import ShippingCTA from '../sections/ShippingCTA';
 import { BRAND } from '../data/brand';
 import { IMAGES } from '../data/images';
@@ -39,6 +40,7 @@ export default function About() {
       </section>
 
       <WhyChooseUs />
+      <ServicesSection />
       <ShippingCTA />
     </div>
   );

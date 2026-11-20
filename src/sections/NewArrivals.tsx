@@ -3,12 +3,13 @@ import { MessageCircle } from 'lucide-react';
 import EditorialImage from '../components/EditorialImage';
 import ProductModal from '../components/ProductModal';
 import Button from '../components/Button';
-import { PRODUCTS, ProductItem } from '../data/products';
+import { ALL_CATALOG_PRODUCTS } from '../data/catalogLoader';
+import { ProductItem } from '../data/products';
 import { buildWhatsAppUrl } from '../utils/whatsapp';
 
 export default function NewArrivals() {
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
-  const arrivals = PRODUCTS.filter((item) => item.isNewArrival);
+  const arrivals = ALL_CATALOG_PRODUCTS.filter((item) => item.isNewArrival);
 
   return (
     <section className="border-b border-border bg-ivory">

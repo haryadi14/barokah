@@ -38,6 +38,7 @@ export default function EditorialImage({
           src={image!.src}
           alt={image!.alt || 'Barokah Store fashion photography'}
           loading="lazy"
+          decoding="async"
           referrerPolicy="no-referrer"
           onError={() => setHasError(true)}
           className={`w-full h-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.03] ${imgClassName}`}

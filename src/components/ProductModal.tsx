@@ -38,28 +38,36 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
       onClick={onClose}
     >
       <div
-        className="bg-ivory border border-border max-w-3xl w-full max-h-[90vh] overflow-y-auto grid grid-cols-1 md:grid-cols-12"
+        className="relative bg-ivory border border-border max-w-3xl w-full max-h-[90vh] overflow-y-auto grid grid-cols-1 md:grid-cols-12"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="md:col-span-6">
+        <div className="md:col-span-6 overflow-hidden">
           <EditorialImage
             image={product.image}
-            aspectClass="aspect-[3/4] h-full"
-            className="border-0 md:border-r border-border"
+            aspectClass="aspect-[4/3] md:aspect-[3/4]"
+            className="border-0 border-b md:border-b-0 md:border-r border-border"
           />
         </div>
 
-        <div className="md:col-span-6 p-6 sm:p-8 flex flex-col justify-between">
+        <div className="md:col-span-6 p-6 sm:p-8 flex flex-col justify-between bg-ivory relative z-10">
           <div>
             <div className="flex items-start justify-between gap-4">
-              <span className="text-[11px] font-sans tracking-editorial uppercase text-earth">
-                {product.categoryName}
-              </span>
+              <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-xs font-sans tracking-editorial uppercase text-earth">
+                <span>{product.categoryName}</span>
+                {product.subCollectionName && (
+                  <>
+                    <span aria-hidden="true">·</span>
+                    <span className="text-charcoal">{product.subCollectionName}</span>
+                  </>
+                )}
+                <span aria-hidden="true">·</span>
+                <span className="text-stone tabular-nums">{product.styleCode}</span>
+              </div>
               <button
                 type="button"
                 onClick={onClose}
                 aria-label="Close product details"
-                className="w-10 h-10 inline-flex items-center justify-center border border-border text-charcoal hover:border-charcoal transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-earth"
+                className="w-10 h-10 inline-flex items-center justify-center border border-border text-charcoal hover:border-charcoal transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-earth shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -67,7 +75,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
             <h3
               id="product-modal-title"
-              className="mt-5 font-serif text-2xl sm:text-3xl text-charcoal leading-snug"
+              className="mt-4 font-serif text-2xl sm:text-3xl text-charcoal leading-snug"
             >
               {product.name}
             </h3>
@@ -81,22 +89,22 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                 {product.price}
               </p>
             ) : (
-              <div className="mt-6 p-4 bg-sand border border-border text-xs text-stone leading-relaxed">
+              <div className="mt-5 p-4 bg-sand border border-border text-xs text-stone leading-relaxed">
                 Message our team on WhatsApp to check current colors, sizes, and
                 pricing. Worldwide shipping available.
               </div>
             )}
           </div>
 
-          <div className="mt-8 pt-6 border-t border-border space-y-3.5">
+          <div className="mt-7 pt-5 border-t border-border space-y-3">
             <Button
-              href={buildProductInquiryUrl(product.name)}
+              href={buildProductInquiryUrl(product)}
               external
               variant="primary"
               className="w-full"
             >
               <MessageCircle className="w-4 h-4" aria-hidden="true" />
-              <span>Inquire via WhatsApp</span>
+              <span>Inquire to WhatsApp</span>
             </Button>
             <p className="flex items-center justify-center gap-1.5 text-xs text-stone text-center">
               <MapPin className="w-3.5 h-3.5 text-earth shrink-0" aria-hidden="true" />
