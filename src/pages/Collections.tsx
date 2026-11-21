@@ -114,13 +114,6 @@ export default function Collections() {
     setSearchParams(next);
   };
 
-  const handleGroupChange = (groupId: string) => {
-    const next = new URLSearchParams();
-    if (groupId !== 'all') next.set('collection', groupId);
-    if (activeCategory !== 'all') next.set('category', activeCategory);
-    setSearchParams(next);
-  };
-
   const handleOpenProduct = (product: ProductItem) => {
     setSelectedProduct(product);
     const next = new URLSearchParams(searchParams);
@@ -170,39 +163,8 @@ export default function Collections() {
               : 'Explore handbags, wallets, sunglasses, perfumes, sandals, clothing, sports jerseys, and fashion accessories at reasonable prices.'}
           </p>
 
-          {/* Curated Collection Filter (if any custom/curated collections exist) */}
-          {curatedCollections.length > 0 && (
-            <div className="mt-7 flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
-              <button
-                type="button"
-                onClick={() => handleGroupChange('all')}
-                className={`shrink-0 whitespace-nowrap px-3.5 py-2 text-[11px] font-sans tracking-editorial uppercase border transition-colors ${
-                  activeCollectionGroup === 'all'
-                    ? 'bg-espresso text-ivory border-espresso'
-                    : 'bg-ivory text-stone border-border hover:text-charcoal hover:border-charcoal'
-                }`}
-              >
-                All Edits
-              </button>
-              {curatedCollections.map((col) => (
-                <button
-                  key={col.id}
-                  type="button"
-                  onClick={() => handleGroupChange(col.id)}
-                  className={`shrink-0 whitespace-nowrap px-3.5 py-2 text-[11px] font-sans tracking-editorial uppercase border transition-colors ${
-                    activeCollectionGroup === col.id
-                      ? 'bg-espresso text-ivory border-espresso'
-                      : 'bg-ivory text-stone border-border hover:text-charcoal hover:border-charcoal'
-                  }`}
-                >
-                  {col.name}
-                </button>
-              ))}
-            </div>
-          )}
-
           {/* Main Category Filter Tabs */}
-          <div className="mt-4 flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+          <div className="mt-8 flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
             <button
               type="button"
               onClick={() => handleCategoryChange('all')}

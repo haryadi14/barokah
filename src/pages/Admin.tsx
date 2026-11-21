@@ -119,6 +119,8 @@ export default function Admin() {
   const [editCatName, setEditCatName] = useState('');
   const [editCatSubtitle, setEditCatSubtitle] = useState('');
   const [editCatCollectionId, setEditCatCollectionId] = useState('');
+  const [editCatImageUrl, setEditCatImageUrl] = useState('');
+  const [editCatFile, setEditCatFile] = useState<File | null>(null);
 
   const [editingSubKey, setEditingSubKey] = useState<string | null>(null);
   const [editSubName, setEditSubName] = useState('');
@@ -561,6 +563,11 @@ export default function Admin() {
     setBusy(true);
     setFeedback(null);
     try {
+      let nextImageUrl = editCatImageUrl.trim();
+      if (editCatFile) {
+        nextImageUrl = await uploadSingleImage(editCatFile, id);
+      }
+
       const res = await fetch(`/api/admin/categories/${encodeURIComponent(id)}`, {
         method: 'PATCH',
         headers: {
@@ -571,11 +578,13 @@ export default function Admin() {
           name: editCatName.trim(),
           subtitle: editCatSubtitle.trim(),
           collectionId: editCatCollectionId || '',
+          ...(nextImageUrl ? { imageUrl: nextImageUrl } : {}),
         }),
       });
       const data = (await res.json()) as { name?: string; error?: string };
       if (!res.ok) throw new Error(data.error || 'Failed to update category.');
       setEditingCatId(null);
+      setEditCatFile(null);
       await refreshCatalog();
       setFeedback({ type: 'success', message: `Updated category "${data.name}".` });
     } catch (err) {
@@ -1881,7 +1890,32 @@ export default function Admin() {
                           placeholder="Category subtitle"
                           className="w-full px-3 py-2 bg-ivory border border-border text-sm text-charcoal focus:outline-none focus:border-charcoal"
                         />
-                        <div className="flex items-center gap-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                          <div>
+                            <label className="block text-[11px] font-sans tracking-editorial uppercase text-stone mb-1">
+                              Upload New Cover Photo
+                            </label>
+                            <input
+                              type="file"
+                              accept="image/jpeg,image/png,image/webp,image/avif"
+                              onChange={(e) => setEditCatFile(e.target.files?.[0] || null)}
+                              className="w-full px-3 py-2 bg-ivory border border-border text-xs text-charcoal"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[11px] font-sans tracking-editorial uppercase text-stone mb-1">
+                              Or Cover Image URL
+                            </label>
+                            <input
+                              type="text"
+                              value={editCatImageUrl}
+                              onChange={(e) => setEditCatImageUrl(e.target.value)}
+                              placeholder="https://... or /catalog-media/..."
+                              className="w-full px-3 py-2 bg-ivory border border-border text-xs text-charcoal focus:outline-none focus:border-charcoal"
+                            />
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 pt-1">
                           <button
                             type="button"
                             disabled={busy}
@@ -1889,11 +1923,14 @@ export default function Admin() {
                             className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-charcoal text-ivory text-[11px] font-sans tracking-editorial uppercase hover:bg-espresso transition-colors"
                           >
                             <Check className="w-3.5 h-3.5" />
-                            <span>Save</span>
+                            <span>Save Changes</span>
                           </button>
                           <button
                             type="button"
-                            onClick={() => setEditingCatId(null)}
+                            onClick={() => {
+                              setEditingCatId(null);
+                              setEditCatFile(null);
+                            }}
                             className="inline-flex items-center gap-1.5 px-3.5 py-2 border border-border text-[11px] font-sans tracking-editorial uppercase text-stone hover:text-charcoal"
                           >
                             <X className="w-3.5 h-3.5" />
@@ -1922,6 +1959,8 @@ export default function Admin() {
                               setEditCatName(cat.name);
                               setEditCatSubtitle(cat.subtitle);
                               setEditCatCollectionId(cat.collectionId || '');
+                              setEditCatImageUrl(cat.image.src);
+                              setEditCatFile(null);
                             }}
                             disabled={busy}
                             aria-label={`Edit category ${cat.name}`}
