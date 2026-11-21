@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, MessageCircle, X } from 'lucide-react';
 import { BRAND, NavItem } from '../data/brand';
-import { COLLECTIONS } from '../data/collections';
+import { useCatalog } from '../context/CatalogContext';
 import { buildWhatsAppUrl } from '../utils/whatsapp';
 import AnnouncementBar from './AnnouncementBar';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { categories } = useCatalog();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -153,7 +154,7 @@ export default function Navbar() {
                   Browse Collections
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {COLLECTIONS.map((col) => (
+                  {categories.map((col) => (
                     <Link
                       key={col.id}
                       to={`/collections?category=${encodeURIComponent(col.id)}`}

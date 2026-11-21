@@ -5,6 +5,7 @@ export interface CollectionCategory {
   name: string;
   shortLabel: string;
   subtitle: string;
+  collectionId?: string;
   image: ImageAsset;
   layoutClass: string;
   aspectClass: string;

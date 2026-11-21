@@ -11,8 +11,15 @@ export interface ImageAsset {
 const HERO_EDITORIAL = '/src/assets/images/barokah_hero_editorial_1795196285797.jpg';
 const BAGS_WALLETS = '/src/assets/images/barokah_bags_wallets_1795196284557.jpg';
 const EYEWEAR_PERFUMES = '/src/assets/images/barokah_eyewear_perfumes_1795196289324.jpg';
-const APPAREL_JERSEYS = '/src/assets/images/barokah_apparel_jerseys_1795196284713.jpg';
 const STORE_INTERIOR = '/src/assets/images/barokah_store_interior_1795196284999.jpg';
+
+const CAT_WALLETS = '/src/assets/images/cat_wallets_1795264951085.jpg';
+const CAT_SUNGLASSES = '/src/assets/images/cat_sunglasses_1795264951235.jpg';
+const CAT_PERFUMES = '/src/assets/images/cat_perfumes_1795264951763.jpg';
+const CAT_SANDALS = '/src/assets/images/cat_sandals_1795264951857.jpg';
+const CAT_CLOTHING = '/src/assets/images/cat_clothing_1795264952664.jpg';
+const CAT_JERSEYS = '/src/assets/images/cat_jerseys_1795264952244.jpg';
+const CAT_ACCESSORIES = '/src/assets/images/cat_accessories_1795264951392.jpg';
 
 /**
  * Centralized Image Registry for BAROKAH STORE.
@@ -77,23 +84,23 @@ export const IMAGES = {
       tone: 'clay',
     } as ImageAsset,
     wallets: {
-      src: BAGS_WALLETS,
-      alt: 'Compact wallets and everyday pouches display',
+      src: CAT_WALLETS,
+      alt: 'Compact leather wallets displayed on travertine stone',
       plateIndex: '02',
       plateTitle: 'Wallets',
       plateSubtitle: 'Compact Daily Utility',
       tone: 'linen',
     } as ImageAsset,
     sunglasses: {
-      src: EYEWEAR_PERFUMES,
-      alt: 'Tortoiseshell sunglasses in warm natural light',
+      src: CAT_SUNGLASSES,
+      alt: 'Tortoiseshell sunglasses in warm natural Bali light',
       plateIndex: '03',
       plateTitle: 'Sunglasses',
       plateSubtitle: 'Island Sun Frames',
       tone: 'sand',
     } as ImageAsset,
     perfumes: {
-      src: EYEWEAR_PERFUMES,
+      src: CAT_PERFUMES,
       alt: 'Glass fragrance bottles arranged on raw linen and limestone',
       plateIndex: '04',
       plateTitle: 'Perfumes',
@@ -101,15 +108,15 @@ export const IMAGES = {
       tone: 'clay',
     } as ImageAsset,
     sandals: {
-      src: APPAREL_JERSEYS,
-      alt: 'Leather sandals arranged on natural wood display shelf',
+      src: CAT_SANDALS,
+      alt: 'Leather sandals arranged on natural teak bench',
       plateIndex: '05',
       plateTitle: 'Sandals & Footwear',
       plateSubtitle: 'Easy Bali Walking Pairs',
       tone: 'sand',
     } as ImageAsset,
     clothing: {
-      src: APPAREL_JERSEYS,
+      src: CAT_CLOTHING,
       alt: 'Relaxed linen shirts and apparel on wooden hangers',
       plateIndex: '06',
       plateTitle: 'Clothing',
@@ -117,16 +124,16 @@ export const IMAGES = {
       tone: 'linen',
     } as ImageAsset,
     jerseys: {
-      src: APPAREL_JERSEYS,
-      alt: 'Folded sports jerseys including basketball and rugby inspired styles',
+      src: CAT_JERSEYS,
+      alt: 'Athletic basketball and rugby sports jerseys on wooden rack',
       plateIndex: '07',
       plateTitle: 'Sports Jerseys',
       plateSubtitle: 'NBA · NRL · AFL',
       tone: 'espresso',
     } as ImageAsset,
     accessories: {
-      src: HERO_EDITORIAL,
-      alt: 'Fashion accessories, sunglasses, and handbags curated together',
+      src: CAT_ACCESSORIES,
+      alt: 'Curated fashion accessories including woven belt, cap, and pouch',
       plateIndex: '08',
       plateTitle: 'Fashion Accessories',
       plateSubtitle: 'Finishing Details',
@@ -144,7 +151,7 @@ export const IMAGES = {
       isPlaceholderAsset: true,
     } as ImageAsset,
     placeholderItem2: {
-      src: BAGS_WALLETS,
+      src: CAT_WALLETS,
       alt: 'Sample wallet display slot for Barokah Store',
       plateIndex: 'Wallets',
       plateTitle: 'Classic Daily Wallet',
@@ -153,7 +160,7 @@ export const IMAGES = {
       isPlaceholderAsset: true,
     } as ImageAsset,
     placeholderItem3: {
-      src: EYEWEAR_PERFUMES,
+      src: CAT_SUNGLASSES,
       alt: 'Sample sunglasses display slot for Barokah Store',
       plateIndex: 'Eyewear',
       plateTitle: 'Sun Frame Eyewear',
@@ -162,7 +169,7 @@ export const IMAGES = {
       isPlaceholderAsset: true,
     } as ImageAsset,
     placeholderItem4: {
-      src: EYEWEAR_PERFUMES,
+      src: CAT_PERFUMES,
       alt: 'Sample perfume display slot for Barokah Store',
       plateIndex: 'Perfumes',
       plateTitle: 'Fragrance Selection',
@@ -171,7 +178,7 @@ export const IMAGES = {
       isPlaceholderAsset: true,
     } as ImageAsset,
     placeholderItem5: {
-      src: APPAREL_JERSEYS,
+      src: CAT_SANDALS,
       alt: 'Sample sandals display slot for Barokah Store',
       plateIndex: 'Footwear',
       plateTitle: 'Island Sandals',
@@ -180,7 +187,7 @@ export const IMAGES = {
       isPlaceholderAsset: true,
     } as ImageAsset,
     placeholderItem6: {
-      src: APPAREL_JERSEYS,
+      src: CAT_CLOTHING,
       alt: 'Sample clothing display slot for Barokah Store',
       plateIndex: 'Clothing',
       plateTitle: 'Everyday Apparel',
@@ -189,7 +196,7 @@ export const IMAGES = {
       isPlaceholderAsset: true,
     } as ImageAsset,
     placeholderItem7: {
-      src: APPAREL_JERSEYS,
+      src: CAT_JERSEYS,
       alt: 'Sample sports jersey display slot for Barokah Store',
       plateIndex: 'Jerseys',
       plateTitle: 'Sports Jersey',
@@ -198,7 +205,7 @@ export const IMAGES = {
       isPlaceholderAsset: true,
     } as ImageAsset,
     placeholderItem8: {
-      src: HERO_EDITORIAL,
+      src: CAT_ACCESSORIES,
       alt: 'Sample fashion accessory display slot for Barokah Store',
       plateIndex: 'Accessories',
       plateTitle: 'Fashion Accessory',

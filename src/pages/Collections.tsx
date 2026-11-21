@@ -4,8 +4,7 @@ import { Folder, MessageCircle } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import ProductModal from '../components/ProductModal';
 import Button from '../components/Button';
-import { COLLECTIONS } from '../data/collections';
-import { ALL_CATALOG_PRODUCTS, BAG_SUBCOLLECTIONS } from '../data/catalogLoader';
+import { useCatalog } from '../context/CatalogContext';
 import { ProductItem } from '../data/products';
 import { buildCategoryInquiryUrl, buildWhatsAppUrl } from '../utils/whatsapp';
 
@@ -16,13 +15,16 @@ export default function Collections() {
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
+  const { curatedCollections, categories, subCategories, products } = useCatalog();
+
   const activeCategory = searchParams.get('category') || 'all';
   const activeBrand = searchParams.get('brand') || 'all';
+  const activeCollectionGroup = searchParams.get('collection') || 'all';
   const styleParam = searchParams.get('style');
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [activeCategory, activeBrand]);
+  }, [activeCategory, activeBrand, activeCollectionGroup]);
 
   // Open product detail modal automatically when visiting a WhatsApp View style link (?style=...)
   useEffect(() => {
@@ -30,44 +32,65 @@ export default function Collections() {
       setSelectedProduct(null);
       return;
     }
-    const matched = ALL_CATALOG_PRODUCTS.find(
+    const matched = products.find(
       (item) => item.styleCode.toLowerCase() === styleParam.toLowerCase()
     );
     if (matched) {
       setSelectedProduct(matched);
     }
-  }, [styleParam]);
+  }, [styleParam, products]);
 
-  const activeCollectionObj = useMemo(
-    () => COLLECTIONS.find((c) => c.id === activeCategory) || null,
-    [activeCategory]
+  const activeCategoryObj = useMemo(
+    () => categories.find((c) => c.id === activeCategory) || null,
+    [categories, activeCategory]
   );
 
-  const activeBrandObj = useMemo(
-    () => BAG_SUBCOLLECTIONS.find((b) => b.id === activeBrand) || null,
-    [activeBrand]
+  const activeSubCategories = useMemo(() => {
+    if (activeCategory === 'all') return [];
+    return subCategories.filter((s) => s.categoryId === activeCategory);
+  }, [subCategories, activeCategory]);
+
+  const activeSubObj = useMemo(
+    () => activeSubCategories.find((b) => b.id === activeBrand) || null,
+    [activeSubCategories, activeBrand]
   );
 
-  const brandCounts = useMemo(() => {
+  const activeGroupObj = useMemo(
+    () => curatedCollections.find((g) => g.id === activeCollectionGroup) || null,
+    [curatedCollections, activeCollectionGroup]
+  );
+
+  const subCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    for (const brand of BAG_SUBCOLLECTIONS) {
-      counts[brand.id] = ALL_CATALOG_PRODUCTS.filter(
-        (p) => p.categoryId === 'bags-handbags' && p.subCollectionId === brand.id
+    for (const sub of activeSubCategories) {
+      counts[sub.id] = products.filter(
+        (p) => p.categoryId === activeCategory && p.subCollectionId === sub.id
       ).length;
     }
     return counts;
-  }, []);
+  }, [activeSubCategories, activeCategory, products]);
 
   const filteredProducts = useMemo(() => {
-    let items = ALL_CATALOG_PRODUCTS;
+    let items = products;
+    if (activeCollectionGroup !== 'all') {
+      const catIdsInGroup = new Set(
+        categories
+          .filter((c) => c.collectionId === activeCollectionGroup)
+          .map((c) => c.id)
+      );
+      items = items.filter(
+        (p) =>
+          p.collectionId === activeCollectionGroup || catIdsInGroup.has(p.categoryId)
+      );
+    }
     if (activeCategory !== 'all') {
       items = items.filter((p) => p.categoryId === activeCategory);
     }
-    if (activeCategory === 'bags-handbags' && activeBrand !== 'all') {
+    if (activeCategory !== 'all' && activeBrand !== 'all') {
       items = items.filter((p) => p.subCollectionId === activeBrand);
     }
     return items;
-  }, [activeCategory, activeBrand]);
+  }, [products, categories, activeCategory, activeBrand, activeCollectionGroup]);
 
   const visibleProducts = useMemo(
     () => filteredProducts.slice(0, visibleCount),
@@ -77,19 +100,25 @@ export default function Collections() {
   const hasMore = visibleCount < filteredProducts.length;
 
   const handleCategoryChange = (categoryId: string) => {
-    if (categoryId === 'all') {
-      setSearchParams({});
-    } else {
-      setSearchParams({ category: categoryId });
-    }
+    const next = new URLSearchParams();
+    if (activeCollectionGroup !== 'all') next.set('collection', activeCollectionGroup);
+    if (categoryId !== 'all') next.set('category', categoryId);
+    setSearchParams(next);
   };
 
   const handleBrandChange = (brandId: string) => {
-    if (brandId === 'all') {
-      setSearchParams({ category: 'bags-handbags' });
-    } else {
-      setSearchParams({ category: 'bags-handbags', brand: brandId });
-    }
+    const next = new URLSearchParams();
+    if (activeCollectionGroup !== 'all') next.set('collection', activeCollectionGroup);
+    if (activeCategory !== 'all') next.set('category', activeCategory);
+    if (brandId !== 'all') next.set('brand', brandId);
+    setSearchParams(next);
+  };
+
+  const handleGroupChange = (groupId: string) => {
+    const next = new URLSearchParams();
+    if (groupId !== 'all') next.set('collection', groupId);
+    if (activeCategory !== 'all') next.set('category', activeCategory);
+    setSearchParams(next);
   };
 
   const handleOpenProduct = (product: ProductItem) => {
@@ -109,10 +138,12 @@ export default function Collections() {
   };
 
   const inquiryLabel =
-    activeCategory === 'bags-handbags' && activeBrandObj
-      ? `${activeBrandObj.name} Bags`
-      : activeCollectionObj
-      ? activeCollectionObj.name
+    activeCategoryObj && activeSubObj
+      ? `${activeSubObj.name} ${activeCategoryObj.name}`
+      : activeCategoryObj
+      ? activeCategoryObj.name
+      : activeGroupObj
+      ? activeGroupObj.name
       : 'Collections';
 
   return (
@@ -123,20 +154,55 @@ export default function Collections() {
             Collections
           </span>
           <h1 className="mt-3 font-serif display-section text-charcoal">
-            {activeCategory === 'bags-handbags' && activeBrandObj
-              ? `${activeBrandObj.name} — Bags & Handbags`
-              : activeCollectionObj
-              ? activeCollectionObj.name
+            {activeCategoryObj && activeSubObj
+              ? `${activeSubObj.name} — ${activeCategoryObj.name}`
+              : activeCategoryObj
+              ? activeCategoryObj.name
+              : activeGroupObj
+              ? activeGroupObj.name
               : 'ALL COLLECTIONS'}
           </h1>
           <p className="mt-4 text-base text-stone max-w-2xl leading-relaxed">
-            {activeCollectionObj
-              ? activeCollectionObj.subtitle
+            {activeCategoryObj
+              ? activeCategoryObj.subtitle
+              : activeGroupObj
+              ? activeGroupObj.description
               : 'Explore handbags, wallets, sunglasses, perfumes, sandals, clothing, sports jerseys, and fashion accessories at reasonable prices.'}
           </p>
 
+          {/* Curated Collection Filter (if any custom/curated collections exist) */}
+          {curatedCollections.length > 0 && (
+            <div className="mt-7 flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+              <button
+                type="button"
+                onClick={() => handleGroupChange('all')}
+                className={`shrink-0 whitespace-nowrap px-3.5 py-2 text-[11px] font-sans tracking-editorial uppercase border transition-colors ${
+                  activeCollectionGroup === 'all'
+                    ? 'bg-espresso text-ivory border-espresso'
+                    : 'bg-ivory text-stone border-border hover:text-charcoal hover:border-charcoal'
+                }`}
+              >
+                All Edits
+              </button>
+              {curatedCollections.map((col) => (
+                <button
+                  key={col.id}
+                  type="button"
+                  onClick={() => handleGroupChange(col.id)}
+                  className={`shrink-0 whitespace-nowrap px-3.5 py-2 text-[11px] font-sans tracking-editorial uppercase border transition-colors ${
+                    activeCollectionGroup === col.id
+                      ? 'bg-espresso text-ivory border-espresso'
+                      : 'bg-ivory text-stone border-border hover:text-charcoal hover:border-charcoal'
+                  }`}
+                >
+                  {col.name}
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* Main Category Filter Tabs */}
-          <div className="mt-8 flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+          <div className="mt-4 flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
             <button
               type="button"
               onClick={() => handleCategoryChange('all')}
@@ -146,10 +212,10 @@ export default function Collections() {
                   : 'bg-ivory text-charcoal border-border hover:border-charcoal'
               }`}
             >
-              All ({ALL_CATALOG_PRODUCTS.length})
+              All Categories ({products.length})
             </button>
 
-            {COLLECTIONS.map((cat) => (
+            {categories.map((cat) => (
               <button
                 key={cat.id}
                 type="button"
@@ -165,11 +231,11 @@ export default function Collections() {
             ))}
           </div>
 
-          {/* Bags & Handbags Sub-Collection Folders (YSL, Prada, Miu Miu, Dior, Goyard) */}
-          {activeCategory === 'bags-handbags' && (
+          {/* Dynamic Sub-Category Folders for any Category that has Sub-Categories */}
+          {activeCategory !== 'all' && activeSubCategories.length > 0 && (
             <div className="mt-6 pt-6 border-t border-border">
               <p className="text-[11px] font-sans tracking-editorial uppercase text-stone mb-3">
-                Bags &amp; Handbags Folders
+                {activeCategoryObj?.name} Sub-Categories
               </p>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
@@ -184,17 +250,17 @@ export default function Collections() {
                 >
                   <span className="flex items-center gap-2 text-xs font-sans font-medium uppercase tracking-wider truncate">
                     <Folder className="w-4 h-4 shrink-0" aria-hidden="true" />
-                    <span>All Brands</span>
+                    <span>All</span>
                   </span>
                 </button>
 
-                {BAG_SUBCOLLECTIONS.map((brand) => {
-                  const isSelected = activeBrand === brand.id;
+                {activeSubCategories.map((sub) => {
+                  const isSelected = activeBrand === sub.id;
                   return (
                     <button
-                      key={brand.id}
+                      key={sub.id}
                       type="button"
-                      onClick={() => handleBrandChange(brand.id)}
+                      onClick={() => handleBrandChange(sub.id)}
                       className={`flex items-center justify-between gap-2 px-4 py-3 text-left border transition-colors ${
                         isSelected
                           ? 'bg-charcoal text-ivory border-charcoal'
@@ -208,14 +274,14 @@ export default function Collections() {
                           }`}
                           aria-hidden="true"
                         />
-                        <span>{brand.name}</span>
+                        <span>{sub.name}</span>
                       </span>
                       <span
                         className={`text-[11px] tabular-nums shrink-0 ${
                           isSelected ? 'text-ivory/75' : 'text-stone'
                         }`}
                       >
-                        {brandCounts[brand.id] ?? 0}
+                        {subCounts[sub.id] ?? 0}
                       </span>
                     </button>
                   );
@@ -236,11 +302,11 @@ export default function Collections() {
 
           <Button
             href={
-              activeCollectionObj
+              activeCategoryObj || activeGroupObj
                 ? buildCategoryInquiryUrl(
                     inquiryLabel,
-                    activeCategory,
-                    activeCategory === 'bags-handbags' ? activeBrand : undefined
+                    activeCategory !== 'all' ? activeCategory : undefined,
+                    activeBrand !== 'all' ? activeBrand : undefined
                   )
                 : buildWhatsAppUrl(
                     'Hello Barokah Store, I would like to ask about your collections.'
@@ -255,15 +321,24 @@ export default function Collections() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {visibleProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onPreview={handleOpenProduct}
-            />
-          ))}
-        </div>
+        {visibleProducts.length === 0 ? (
+          <div className="py-16 text-center border border-border bg-sand/40 px-6">
+            <p className="font-serif text-2xl text-charcoal">No items in this filter yet</p>
+            <p className="mt-2 text-sm text-stone">
+              Select another category or add products from the Admin Panel.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {visibleProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onPreview={handleOpenProduct}
+              />
+            ))}
+          </div>
+        )}
 
         {hasMore && (
           <div className="mt-12 flex justify-center">

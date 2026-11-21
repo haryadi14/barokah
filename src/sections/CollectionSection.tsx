@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
 import CollectionCard from '../components/CollectionCard';
-import { COLLECTIONS } from '../data/collections';
+import { useCatalog } from '../context/CatalogContext';
 import { useReveal } from '../hooks/useReveal';
 
 export default function CollectionSection() {
   const { ref, visible } = useReveal();
+  const { categories } = useCatalog();
 
   return (
     <section
@@ -36,7 +37,7 @@ export default function CollectionSection() {
         </div>
 
         <div className="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-8 sm:gap-y-10">
-          {COLLECTIONS.map((collection) => (
+          {categories.map((collection) => (
             <CollectionCard key={collection.id} collection={collection} />
           ))}
         </div>

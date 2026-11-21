@@ -8,6 +8,7 @@ export interface ProductItem {
   categoryName: string;
   subCollectionId?: string;
   subCollectionName?: string;
+  collectionId?: string;
   price: string | null;
   isFeatured: boolean;
   isNewArrival: boolean;

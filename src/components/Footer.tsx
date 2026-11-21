@@ -115,9 +115,15 @@ export default function Footer() {
           <p className="tracking-editorial uppercase text-ivory">
             {BRAND.statement}
           </p>
-          <p>
-            © {new Date().getFullYear()} {BRAND.name}. Seminyak, Bali, Indonesia.
-          </p>
+          <div className="flex items-center gap-4">
+            <Link to="/admin" className="text-ivory/60 hover:text-earth transition-colors">
+              Admin Panel
+            </Link>
+            <span aria-hidden="true">·</span>
+            <p>
+              © {new Date().getFullYear()} {BRAND.name}. Seminyak, Bali, Indonesia.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

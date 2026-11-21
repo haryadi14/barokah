@@ -1,0 +1,124 @@
+{
+  "collections": [
+    {
+      "id": "seminyak-essentials",
+      "name": "Seminyak Essentials",
+      "description": "Everyday bags, wallets, sunglasses, and accessories curated in Seminyak, Bali.",
+      "imageUrl": "/src/assets/images/barokah_hero_editorial_1795196285797.jpg",
+      "sortOrder": 1
+    },
+    {
+      "id": "designer-bags-edit",
+      "name": "Designer Bags Edit",
+      "description": "Featured handbags across YSL, Prada, Miu Miu, Dior, and Goyard styles.",
+      "imageUrl": "/src/assets/images/barokah_bags_wallets_1795196284557.jpg",
+      "sortOrder": 2
+    },
+    {
+      "id": "island-lifestyle",
+      "name": "Island & Resort Edit",
+      "description": "Clothing, sandals, sunglasses, fragrances, and sports jerseys for Bali days.",
+      "imageUrl": "/src/assets/images/barokah_store_interior_1795196284999.jpg",
+      "sortOrder": 3
+    }
+  ],
+  "categories": [
+    {
+      "id": "bags-handbags",
+      "name": "Bags & Handbags",
+      "subtitle": "Everyday totes, shoulder bags, and compact carryalls.",
+      "imageUrl": "/src/assets/images/barokah_bags_wallets_1795196284557.jpg",
+      "collectionId": "designer-bags-edit",
+      "sortOrder": 1
+    },
+    {
+      "id": "wallets",
+      "name": "Wallets",
+      "subtitle": "Compact and practical everyday essentials.",
+      "imageUrl": "/src/assets/images/cat_wallets_1795264951085.jpg",
+      "collectionId": "seminyak-essentials",
+      "sortOrder": 2
+    },
+    {
+      "id": "sunglasses",
+      "name": "Sunglasses",
+      "subtitle": "Sun-ready eyewear suited for island days.",
+      "imageUrl": "/src/assets/images/cat_sunglasses_1795264951235.jpg",
+      "collectionId": "seminyak-essentials",
+      "sortOrder": 3
+    },
+    {
+      "id": "perfumes",
+      "name": "Perfumes",
+      "subtitle": "Selected scents for daily wear and travel.",
+      "imageUrl": "/src/assets/images/cat_perfumes_1795264951763.jpg",
+      "collectionId": "island-lifestyle",
+      "sortOrder": 4
+    },
+    {
+      "id": "sandals-footwear",
+      "name": "Sandals & Footwear",
+      "subtitle": "Comfortable footwear for Bali streets and beyond.",
+      "imageUrl": "/src/assets/images/cat_sandals_1795264951857.jpg",
+      "collectionId": "island-lifestyle",
+      "sortOrder": 5
+    },
+    {
+      "id": "clothing",
+      "name": "Clothing",
+      "subtitle": "Versatile apparel for relaxed and everyday dressing.",
+      "imageUrl": "/src/assets/images/cat_clothing_1795264952664.jpg",
+      "collectionId": "island-lifestyle",
+      "sortOrder": 6
+    },
+    {
+      "id": "sports-jerseys",
+      "name": "Sports Jerseys",
+      "subtitle": "Featuring NBA, NRL, and AFL jersey styles.",
+      "imageUrl": "/src/assets/images/cat_jerseys_1795264952244.jpg",
+      "collectionId": "island-lifestyle",
+      "sortOrder": 7
+    },
+    {
+      "id": "fashion-accessories",
+      "name": "Fashion Accessories",
+      "subtitle": "Finishing touches to match your personal style.",
+      "imageUrl": "/src/assets/images/cat_accessories_1795264951392.jpg",
+      "collectionId": "seminyak-essentials",
+      "sortOrder": 8
+    }
+  ],
+  "subCategories": [
+    {
+      "id": "ysl",
+      "categoryId": "bags-handbags",
+      "name": "YSL",
+      "sortOrder": 1
+    },
+    {
+      "id": "prada",
+      "categoryId": "bags-handbags",
+      "name": "Prada",
+      "sortOrder": 2
+    },
+    {
+      "id": "miu-miu",
+      "categoryId": "bags-handbags",
+      "name": "Miu Miu",
+      "sortOrder": 3
+    },
+    {
+      "id": "dior",
+      "categoryId": "bags-handbags",
+      "name": "Dior",
+      "sortOrder": 4
+    },
+    {
+      "id": "goyard",
+      "categoryId": "bags-handbags",
+      "name": "Goyard",
+      "sortOrder": 5
+    }
+  ],
+  "products": []
+}
